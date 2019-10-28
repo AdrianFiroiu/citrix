@@ -27,13 +27,19 @@ class Direct extends ServiceAbstract implements CitrixApiAware
    * Authentication URL
    * @var String
    */
-  private $authorizeUrl = 'https://api.getgo.com/oauth/access_token';
+  private $authorizeUrl = 'https://api.getgo.com/oauth/v2/token';
 
   /**
    * API key or Secret Key in Citrix's Developer Portal
    * @var String
    */
   private $apiKey;
+
+    /**
+     * API Secret in Citrix's Developer Portal
+     * @var String
+     */
+    private $apiSecret;
 
   /**
    * Access Token
@@ -52,9 +58,10 @@ class Direct extends ServiceAbstract implements CitrixApiAware
    *
    * @param String $apiKey
    */
-  public function __construct($apiKey = null)
+  public function __construct($apiKey = null, $apiSecret = null)
   {
     $this->setApiKey($apiKey);
+    $this->setApiSecret($apiSecret);
   }
 
   /**
@@ -79,18 +86,26 @@ class Direct extends ServiceAbstract implements CitrixApiAware
       return $this;
     }
 
-    $params = array(
-      'grant_type' => 'password',
-      'user_id' => $username,
-      'password' => $password,
-      'client_id' => $this->getApiKey()
+    $headers = array(
+        'Content-Type: application/json',
+        'Accept: application/json',
+        'Authorization: Basic '.base64_encode($this->getApiKey().':'.$this->getApiSecret())
     );
 
-    $this->setHttpMethod('GET')
+    $params = [
+      'grant_type' => 'password',
+      'username' => $username,
+      'password' => $password
+    ];
+
+    $this->setHttpMethod('POST')
       ->setUrl($this->authorizeUrl)
       ->setParams($params)
+      ->setHeaders($headers)
       ->sendRequest()
       ->processResponse();
+
+
 
     return $this;
   }
@@ -114,6 +129,27 @@ class Direct extends ServiceAbstract implements CitrixApiAware
 
     return $this;
   }
+
+
+    /**
+     *
+     * @return the $apiSecret
+     */
+    public function getApiSecret()
+    {
+        return $this->apiSecret;
+    }
+
+    /**
+     *
+     * @param String $apiSecret
+     */
+    public function setApiSecret($apiSecret)
+    {
+        $this->apiSecret = $apiSecret;
+
+        return $this;
+    }
 
   /* (non-PHPdoc)
    * @see \Citrix\CitrixApiAware::processResponse()
