@@ -92,11 +92,11 @@ class Direct extends ServiceAbstract implements CitrixApiAware
         'Authorization: Basic '.base64_encode($this->getApiKey().':'.$this->getApiSecret())
     );
 
-    $params = [
+    $params = array(
       'grant_type' => 'password',
       'username' => $username,
       'password' => $password
-    ];
+    );
 
     $this->setHttpMethod('POST')
       ->setUrl($this->authorizeUrl)
