@@ -190,7 +190,7 @@ class GoToWebinar extends ServiceAbstract implements CitrixApiAware
     $this->setHttpMethod('POST')
         ->setUrl($url)
         ->setParams($registrantData)
-        ->sendRequest($this->getClient()->getAccessToken())
+        ->sendRequest($this->getClient()->getAccessToken(), true)
         ->processResponse(true);
 
     return $this->getResponse();
