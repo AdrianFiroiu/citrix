@@ -64,13 +64,17 @@ abstract class ServiceAbstract
    * @param string $oauthToken          
    * @return \Citrix\ServiceAbstract
    */
-  public function sendRequest($oauthToken = null)
+  public function sendRequest($oauthToken = null, $doJson = false)
   {
     $url = $this->getUrl();
     $ch = curl_init(); // initiate curl
     if ($this->getHttpMethod() == 'POST') {
       $fields_string="";
-      foreach($this->getParams() as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+      if($doJson) {
+          $fields_string = json_encode($this->getParams());
+      } else {
+          foreach($this->getParams() as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+      }
       curl_setopt($ch, CURLOPT_POST, true); // tell curl you want to post something
       curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string); // define what you want to post
     } else if($this->getHttpMethod() != 'POST' && $this->getHttpMethod() != 'GET') {
