@@ -1,4 +1,4 @@
-Citrix API - PHP wrapper around GoToWebinar APIs - 2015
+Citrix API - PHP wrapper around GoToWebinar APIs - 2020
 ======
 
 Install via Composer
@@ -106,17 +106,3 @@ Also you can push new errors like so:
     $registration->addError('Something went wrong!!!');
 
 Error handling should be available everywhere, so you should always be able to call `hasErrors()` and check for errors.
-
-Contributions - Fork, Fork, Fork
---
-
-If you would like to help maintain this project and/or if you have any questions or comments about the library's design or implementation I'd love to hear from you.
-
-What's coming?
---
-
-More stuff, first and foremoest in-like documentation, so your IDE works. Unit testing, and more from Citrix API.
-
-
-  [1]: https://developer.citrixonline.com/user/register
-  [2]: http://GoToWebinar.com
